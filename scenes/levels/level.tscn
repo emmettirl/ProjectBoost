@@ -1,0 +1,54 @@
+[gd_scene load_steps=10 format=3 uid="uid://rnhbdtuiyijt"]
+
+[ext_resource type="PackedScene" uid="uid://5p37kffu84t1" path="res://scenes/camera_3d.tscn" id="1_b5q3n"]
+[ext_resource type="PackedScene" uid="uid://dkplcqp36vswr" path="res://scenes/player.tscn" id="1_vkdf1"]
+[ext_resource type="PackedScene" uid="uid://dleh0r1myad4y" path="res://scenes/floor.tscn" id="2_5b0cq"]
+[ext_resource type="Script" path="res://scripts/LandingPad.gd" id="2_ofa1c"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_t1m5v"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_6vgft"]
+sky_material = SubResource("ProceduralSkyMaterial_t1m5v")
+
+[sub_resource type="Environment" id="Environment_8f73x"]
+background_mode = 1
+background_color = Color(0.0588235, 0.0392157, 0.0431373, 1)
+sky = SubResource("Sky_6vgft")
+ambient_light_source = 3
+ambient_light_color = Color(0.360784, 0.360784, 0.360784, 1)
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_avhh5"]
+albedo_color = Color(0, 0.509804, 0.509804, 1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_r8lkd"]
+albedo_color = Color(0, 0.568627, 0.172549, 1)
+
+[node name="Level" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_8f73x")
+
+[node name="Camera3D" parent="." instance=ExtResource("1_b5q3n")]
+
+[node name="Floor" parent="." instance=ExtResource("2_5b0cq")]
+
+[node name="Player" parent="." instance=ExtResource("1_vkdf1")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 1.47, 0)
+
+[node name="LaunchPad" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.2, 0)
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("StandardMaterial3D_avhh5")
+
+[node name="LandingPad" type="CSGBox3D" parent="." groups=["Goal"]]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.2, 0)
+use_collision = true
+size = Vector3(2, 0.4, 2)
+material = SubResource("StandardMaterial3D_r8lkd")
+script = ExtResource("2_ofa1c")
+file_path = "res://scenes/levels/level2.tscn"
